@@ -4,7 +4,8 @@ import {TaskType, TodoList} from "./Todolist";
 import {v1} from "uuid";
 
 export type FilterValueType = "all" | "active" | "completed"
-console.log(v1())
+
+
 function App() {
     const todoTitle_1: string = "What to learn"
 
@@ -20,9 +21,9 @@ function App() {
 
 
     const addTask = (title: string) => {
-       const newTask: TaskType = {
-           id: v1(), title:title, isDone: false
-       }
+        const newTask: TaskType = {
+            id: v1(), title: title, isDone: false
+        }
         setTasks([newTask, ...tasks])
     }
 
@@ -31,23 +32,28 @@ function App() {
         setTasks(filteredTasks)
     }
 
+    const changeTaskStatus = (taskId: string, newIsDone: boolean) => {
+        setTasks(tasks.map(t => t.id === taskId ? {...t, isDone: newIsDone} : t))
+    }
+
     const [filter, setfilter] = useState<FilterValueType>("all")
 
-    const changeTodoListFilter = (filter: FilterValueType)=>{
+    const changeTodoListFilter = (filter: FilterValueType) => {
         setfilter(filter)
     }
 
-    let tasksForTodoList: Array<TaskType> = []
-    if (filter === "all") {
-        tasksForTodoList = tasks
-    }
-    if (filter === "active") {
-        tasksForTodoList = tasks.filter(t => t.isDone === false)
-    }
-    if (filter === "completed") {
-        tasksForTodoList = tasks.filter(t => t.isDone === true)
-    }
 
+    const getFilteredTaskForRender = (tasksList: Array<TaskType>, filterValue: FilterValueType) => {
+        switch (filterValue) {
+            case "active":
+                return tasksList.filter(t => t.isDone === false)
+            case "completed":
+                return tasksList.filter(t => t.isDone === true)
+            default:
+                return tasksList
+        }
+    }
+    const tasksForTodoList: Array<TaskType> = getFilteredTaskForRender(tasks, filter)
     return (
         <div className="App">
             <TodoList
@@ -56,6 +62,8 @@ function App() {
                 removeTask={removeTask}
                 changeTodoListFilter={changeTodoListFilter}
                 addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
+                filter={filter}
             />
         </div>
     );
