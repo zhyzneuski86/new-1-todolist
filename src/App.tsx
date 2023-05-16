@@ -51,7 +51,6 @@ function App() {
     function addTask(title: string, todoListId: string) {
         const newTask: TaskType = {id: v1(), title: title, isDone: false}
         setTasks({...tasks, [todoListId]: [newTask, ...tasks[todoListId]]})
-
     }
 
     function changeStatus(taskId: string, newIsDone: boolean, todoListId: string) {
@@ -62,7 +61,6 @@ function App() {
 
     }
     function changeFilter(todoListId: string, value: FilterValuesType) {
-
         setTodolists(todolists.map(el => el.id === todoListId ? {...el, filter: value} : el))
     }
 
