@@ -1,10 +1,14 @@
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer';
-import {TasksStateType} from '../App';
+import {TasksStateType, TodolistType} from '../App';
 import {addTodolistAC, removeTodolistAC} from './todolists-reducer';
+import {v1} from "uuid";
+
 
 let startState: TasksStateType
+
 beforeEach(()=>{
-      startState  = {
+
+    startState  = {
         "todolistId1": [
             { id: "1", title: "CSS", isDone: false },
             { id: "2", title: "JS", isDone: true },
@@ -16,6 +20,7 @@ beforeEach(()=>{
             { id: "3", title: "tea", isDone: false }
         ]
     };
+
 })
 
 test('correct task should be deleted from correct array', () => {
@@ -33,6 +38,7 @@ test('correct task should be deleted from correct array', () => {
 });
 
 test('correct task should be added to correct array', () => {
+
 
     const action = addTaskAC("juce", "todolistId2");
     const endState = tasksReducer(startState, action)
@@ -55,7 +61,6 @@ test('status of specified task should be changed', () => {
 });
 
 test('title of specified task should be changed', () => {
-
 
     const action = changeTaskTitleAC("2", "Milkyway", "todolistId2");
     const endState = tasksReducer(startState, action)

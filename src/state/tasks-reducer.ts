@@ -25,12 +25,13 @@ export type ChangeTaskTitleActionType = {
     title: string
 }
 
-export type ActionsType = RemoveTaskActionType | AddTaskActionType
+type ActionsType = RemoveTaskActionType | AddTaskActionType
  | ChangeTaskStatusActionType | ChangeTaskTitleActionType
     | AddTodolistActionType | RemoveTodolistActionType;
-const initialState:  TasksStateType = {}
 
-export const tasksReducer = (state=initialState, action: ActionsType): TasksStateType => {
+const initialState: TasksStateType = {}
+
+export const tasksReducer = (state  = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             const stateCopy = {...state};
@@ -48,16 +49,20 @@ export const tasksReducer = (state=initialState, action: ActionsType): TasksStat
             return stateCopy;
         }
         case 'CHANGE-TASK-STATUS': {
-            const stateCopy = {...state};
-
-            let tasks = stateCopy[action.todolistId];
-            // найдём нужную таску:
-            let task = tasks.find(t => t.id === action.taskId);
-            //изменим таску, если она нашлась
-            if (task) {
-                task.isDone = action.isDone;
+            // const stateCopy = {...state};
+            // let tasks = stateCopy[action.todolistId];
+            // // найдём нужную таску:
+            // let task = tasks.find(t => t.id === action.taskId);
+            // //изменим таску, если она нашлась
+            // if (task) {
+            //     task.isDone = action.isDone;
+            // }
+            // return stateCopy;
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(t => t.id === action.taskId ? {...t, isDone: action.isDone}: t)
             }
-            return stateCopy;
         }
         case 'CHANGE-TASK-TITLE': {
             const stateCopy = {...state};
@@ -84,7 +89,7 @@ export const tasksReducer = (state=initialState, action: ActionsType): TasksStat
             return stateCopy;
         }
         default:
-            return state
+           return  state
     }
 }
 

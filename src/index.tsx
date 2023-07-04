@@ -3,7 +3,7 @@ import './index.css';
 import App from './App';
 import { createRoot } from 'react-dom/client';
 import * as serviceWorker from './serviceWorker';
-import AppWithReducer from "./AppWithReducers";
+import AppWithReducers from "./AppWithReducers";
 import AppWithRedux from "./AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./state/store";
