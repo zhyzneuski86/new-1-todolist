@@ -12,23 +12,24 @@ export type TaskPropsType = {
 
 }
 
-export const TaskWithRedux = memo(({
+export const TaskWithRedux = React.memo(({
                                        task,
                                        todolistId
                                    }: TaskPropsType) => {
     const dispatch = useDispatch()
 
-    const onClickHandler = () => dispatch(removeTaskAC(task.id, todolistId))
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onClickHandler =  useCallback(()=>
+        dispatch(removeTaskAC(task.id, todolistId)), [task.id, todolistId])
+
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked;
         dispatch(changeTaskStatusAC(task.id, newIsDoneValue, todolistId))
-    }
+    }, [task.id, todolistId])
     const onTitleChangeHandler = useCallback((newValue: string) => {
-
         dispatch(changeTaskTitleAC(task.id, newValue, todolistId))
-    }, [task.id])
+    }, [task.id, todolistId])
 
-    return <div className={task.isDone ? "is-done" : ""}>
+    return <div key={task.id} className={task.isDone ? "is-done" : ""}>
         <Checkbox
             checked={task.isDone}
             color="primary"
